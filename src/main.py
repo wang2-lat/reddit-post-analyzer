@@ -63,20 +63,16 @@ def analyze_with_llm(post):
     if post['score'] > 100:
         key_points.append("高热度内容")
     
-    sentences = re.split(r'[.!?。！？]', content)
-    summary = sentences[0][:200] if sentences else content[:200]
-    
     return {
-        'summary': summary,
-        'key_points': key_points,
+        'summary': post['title'][:100],
+        'key_points': key_points or ["一般讨论"],
         'sentiment': 'positive' if post['score'] > 50 else 'neutral',
-        'engagement_score': post['score']
+        'word_count': len(words)
     }
 
-def save_post(conn, post, analysis):
+def save_to_db(conn, post, analysis):
     conn.execute("""
-        INSERT OR REPLACE INTO posts (id, url, title, content, score, analysis, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT OR REPLACE INTO posts VALUES (?, ?, ?, ?, ?, ?, ?)
     """, (
         post['id'],
         post['url'],
@@ -102,12 +98,9 @@ def analyze(url, output):
         conn = init_db()
         post = fetch_reddit_post(url)
         analysis = analyze_with_llm(post)
-        save_post(conn, post, analysis)
+        save_to_db(conn, post, analysis)
         
-        result = {
-            'post': post,
-            'analysis': analysis
-        }
+        result = {**post, 'analysis': analysis}
         
         if output:
             Path(output).write_text(json.dumps(result, ensure_ascii=False, indent=2))
@@ -132,8 +125,8 @@ def batch(urls, output):
         try:
             post = fetch_reddit_post(url)
             analysis = analyze_with_llm(post)
-            save_post(conn, post, analysis)
-            results.append({'post': post, 'analysis': analysis})
+            save_to_db(conn, post, analysis)
+            results.append({**post, 'analysis': analysis})
             click.echo(f"✓ {post['title'][:50]}")
         except Exception as e:
             click.echo(f"✗ {url}: {e}", err=True)
