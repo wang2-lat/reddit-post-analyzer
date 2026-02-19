@@ -7,13 +7,13 @@
 ## <a id="english"></a>English
 
 ### Overview
-Reddit帖子内容提取与结构化分析工具
+A tool to extract and analyze Reddit post content, identifying key themes about hiring practices and workplace culture
 
 ### Features
-- 抓取Reddit帖子标题、正文、票数
-- 提取核心观点和关键信息
-- 结构化输出为JSON格式
-- 支持批量分析多个帖子
+- Extract Reddit post metadata (title, description, votes)
+- Identify key themes and insights from post content
+- Categorize hiring/workplace experience patterns
+- Generate structured analysis output in JSON format
 
 ### Installation
 ```bash
@@ -22,20 +22,20 @@ python src/main.py --help
 ```
 
 ### Tech Stack
-Python, praw, openai/anthropic
+Python, requests/praw (Reddit API), json, NLP libraries (optional: spaCy/NLTK)
 
 ---
 
 ## <a id="chinese"></a>中文
 
 ### 概述
-Reddit帖子内容提取与结构化分析工具
+Reddit帖子分析工具，提取并分析招聘实践和职场文化相关的核心主题
 
 ### 功能特性
-- 抓取Reddit帖子标题、正文、票数
-- 提取核心观点和关键信息
-- 结构化输出为JSON格式
-- 支持批量分析多个帖子
+- 提取Reddit帖子元数据（标题、描述、票数）
+- 识别帖子内容的核心主题和见解
+- 分类招聘/职场经验模式
+- 生成结构化JSON分析结果
 
 ### 安装使用
 ```bash
@@ -44,4 +44,4 @@ python src/main.py --help
 ```
 
 ### 技术栈
-Python, praw, openai/anthropic
+Python, requests/praw (Reddit API), json, NLP libraries (optional: spaCy/NLTK)
